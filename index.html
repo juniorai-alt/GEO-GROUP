@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Browse Links - UNBORN LINKS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a0a0f;
+      color: #fff;
+      min-height: 100vh;
+    }
+    .bg-glow {
+      position: fixed;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #10b98130 0%, transparent 70%);
+      filter: blur(80px);
+      z-index: 0;
+    }
+    .glow-1 { top: 10%; left: 20%; }
+    .glow-2 { bottom: 20%; right: 15%; background: radial-gradient(circle, #05966920 0%, transparent 70%); }
+    
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 0 20px 40px;
+    }
+    
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      background: #0a0a0f90;
+      backdrop-filter: blur(10px);
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 20px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .logo-icon {
+      width: 28px;
+      height: 28px;
+      background: #10b981;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+    .logo .unborn { color: #10b981; }
+    .back {
+      font-size: 14px;
+      color: #9ca3af;
+      cursor: pointer;
+    }
+    
+    /* Search + Filter */
+    .search-bar {
+      margin: 10px 0 25px;
+    }
+    .search-bar input {
+      width: 100%;
+      padding: 14px 16px;
+      background: #1a1a24;
+      border: 1px solid #2a2a35;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 15px;
+    }
+    .search-bar input:focus {
+      outline: none;
+      border-color: #10b981;
+    }
+    .filters {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 25px;
+      overflow-x: auto;
+      padding-bottom: 5px;
+    }
+    .filter-btn {
+      background: #1a1a24;
+      border: 1px solid #2a2a35;
+      padding: 8px 14px;
+      border-radius: 50px;
+      font-size: 13px;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .filter-btn.active {
+      background: #10b981;
+      color: #000;
+      border-color: #10b981;
+      font-weight: 600;
+    }
+    
+    /* Group Cards */
+    .cards {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .card {
+      background: #1a1a24;
+      border: 1px solid #2a2a35;
+      border-radius: 16px;
+      padding: 18px;
+      transition: all 0.2s;
+    }
+    .card:hover {
+      border-color: #10b98140;
+      transform: translateY(-2px);
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      background: #10b981;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+    .card-info h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .card-info .category {
+      font-size: 12px;
+      color: #10b981;
+      background: #10b98120;
+      padding: 2px 8px;
+      border-radius: 6px;
+      display: inline-block;
+    }
+    .card-desc {
+      color: #9ca3af;
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .members {
+      font-size: 12px;
+      color: #6b7280;
+    }
+    .join-btn {
+      background: #10b981;
+      color: #000;
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+    }
+    .join-btn:hover {
+      background: #059669;
+    }
+    .empty {
+      text-align: center;
+      color: #6b7280;
+      padding: 60px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-glow glow-1"></div>
+  <div class="bg-glow glow-2"></div>
+  
+  <div class="container">
+    <header>
+      <div class="logo" onclick="window.location.href='index.html'">
+        <div class="logo-icon">🔗</div>
+        <div><span class="unborn">UNBORN</span> LINKS</div>
+      </div>
+      <div class="back" onclick="window.history.back()">← Back</div>
+    </header>
+
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search groups..." onkeyup="filterGroups()">
+    </div>
+
+    <div class="filters">
+      <div class="filter-btn active" onclick="setFilter('all')">All</div>
+      <div class="filter-btn" onclick="setFilter('business')">Business</div>
+      <div class="filter-btn" onclick="setFilter('tech')">Tech</div>
+      <div class="filter-btn" onclick="setFilter('fun')">Fun</div>
+      <div class="filter-btn" onclick="setFilter('study')">Study</div>
+      <div class="filter-btn" onclick="setFilter('kenya')">Kenya</div>
+    </div>
+
+    <div class="cards" id="groupCards">
+      <!-- Cards load here -->
+    </div>
+
+    <div class="empty" id="emptyState" style="display:none;">
+      No groups found. Be the first to submit one!
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+    import { getDatabase, ref, onValue } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyA4L8OdOUvJ9IlbB--nhOd_SGYI9pj8LL0",
+      authDomain: "eeror-733ac.firebaseapp.com",
+      databaseURL: "https://eeror-733ac-default-rtdb.firebaseio.com",
+      projectId: "eeror-733ac",
+      storageBucket: "eeror-733ac.firebasestorage.app",
+      messagingSenderId: "398067289132",
+      appId: "1:398067289132:web:50f5c3bdceff78d1f19589"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const groupsRef = ref(db, 'unborn_groups');
+
+    let allGroups = [];
+    let currentFilter = 'all';
+
+    // Demo data - replace with Firebase later
+    allGroups = [
+      { name: "Nairobi Hustlers", category: "business", desc: "Connect with entrepreneurs & business minds in Nairobi. Share deals, opportunities.", link: "https://chat.whatsapp.com/demo1", members: "2.4k", icon: "💼" },
+      { name: "Code Kenya", category: "tech", desc: "Kenyan developers, designers, tech enthusiasts. Job posts & coding help.", link: "https://chat.whatsapp.com/demo2", members: "5.1k", icon: "💻" },
+      { name: "Campus Memes KE", category: "fun", desc: "Dai ly memes, campus gist, vibes. Strictly 18+ fun only.", link: "https://chat.whatsapp.com/demo3", members: "8.2k", icon: "😂" },
+      { name: "KCSE 2026 Study", category: "study", desc: "Form 4 revision materials, past papers, group discussions.", link: "https://chat.whatsapp.com/demo4", members: "3.7k", icon: "📚" },
+      { name: "Mombasa Connect", category: "kenya", desc: "All things 001. Events, business, meetups in Mombasa.", link: "https://chat.whatsapp.com/demo5", members: "1.9k", icon: "🌊" },
+    ];
+
+    // Load from Firebase - uncomment when ready
+    /*
+    onValue(groupsRef, (snapshot) => {
+      allGroups = [];
+      if (snapshot.exists()) {
+        snapshot.forEach((child) => {
+          allGroups.push(child.val());
+        });
+      }
+      renderGroups();
+    });
+    */
+
+    renderGroups();
+
+    function renderGroups() {
+      const container = document.getElementById('groupCards');
+      const empty = document.getElementById('emptyState');
+      const search = document.getElementById('searchInput').value.toLowerCase();
+      
+      const filtered = allGroups.filter(g => {
+        const matchSearch = g.name.toLowerCase().includes(search) || g.desc.toLowerCase().includes(search);
+        const matchFilter = currentFilter === 'all' || g.category === currentFilter;
+        return matchSearch && matchFilter;
+      });
+
+      container.innerHTML = '';
+      
+      if (filtered.length === 0) {
+        empty.style.display = 'block';
+        return;
+      }
+      empty.style.display = 'none';
+
+      filtered.forEach(group => {
+        container.innerHTML += `
+          <div class="card">
+            <div class="card-header">
+              <div class="card-icon">${group.icon}</div>
+              <div class="card-info">
+                <h3>${group.name}</h3>
+                <div class="category">${group.category.toUpperCase()}</div>
+              </div>
+            </div>
+            <p class="card-desc">${group.desc}</p>
+            <div class="card-footer">
+              <div class="members">👥 ${group.members} members</div>
+              <button class="join-btn" onclick="window.open('${group.link}', '_blank')">Join</button>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    window.filterGroups = renderGroups;
+    
+    window.setFilter = function(cat) {
+      currentFilter = cat;
+      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      renderGroups();
+    }
+  </script>
+</body>
+      </html>
